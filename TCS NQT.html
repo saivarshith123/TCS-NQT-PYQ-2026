@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCS NQT 2026 | Hyper-Archive</title>
+    <style>
+        :root {
+            --bg: #030303;
+            --accent: #00f2fe;
+            --accent-2: #7000ff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --card-hover: rgba(255, 255, 255, 0.07);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* ADVANCED GRAPHICS: Animated Mesh Gradient Background */
+        .mesh-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(225,39%,30%,1) 0, transparent 50%);
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: pulseBg 10s infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* Floating Grid Lines */
+        .grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            padding: 20px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 8vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: -4px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff 30%, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.3));
+        }
+
+        .subtitle {
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 0.8rem;
+            margin-bottom: 50px;
+        }
+
+        /* ADVANCED CSS: Grid Layout with Glassmorphism */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .nav-card {
+            position: relative;
+            text-decoration: none;
+            color: white;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 40px 20px;
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hover Glow Effect */
+        .nav-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), 
+                        rgba(255,255,255,0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .nav-card:hover::before { opacity: 1; }
+
+        .nav-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        0 0 20px rgba(0, 242, 254, 0.1);
+        }
+
+        .date {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: rgba(0, 242, 254, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .shift-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .view-btn {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #555;
+            transition: color 0.3s;
+        }
+
+        .nav-card:hover .view-btn { color: white; }
+
+        /* Mouse Following Light (JS-driven) */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(112, 0, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mesh-bg"></div>
+    <div class="grid"></div>
+    <div class="cursor-glow" id="cursor"></div>
+
+    <div class="container">
+        <header>
+            <p class="subtitle">Secure Examination Portal</p>
+            <h1>TCS NQT 2026</h1>
+        </header>
+
+        <div class="portal-grid">
+            <a href="https://www.notion.so/20-Th-March-2026-shift-1-3290a0121cbb80fbb31fdfe1fdbf0abf" target="_blank" class="nav-card">
+                <span class="date">MARCH 20, 2026</span>
+                <span class="shift-title">Shift 01</span>
+                <span class="view-btn">Initialize Access →</span>
+            </a>
+
+            <a href="https://www.notion.so/20th-March-shift2-3290a0121cbb806c8c61f68b28775130" target="_blank" class="nav-card">
+                <span class="date">MARCH 20, 2026</span>
+                <span class="shift-title">Shift 02</span>
+                <span class="view-btn">Initialize Access →</span>
+            </a>
+
+            <a href="https://www.notion.so/21st-March-Shift-1-Questions-32a0a0121cbb802c938fc51da5b08304" target="_blank" class="nav-card">
+                <span class="date">MARCH 21, 2026</span>
+                <span class="shift-title">Shift 01</span>
+                <span class="view-btn">Initialize Access →</span>
+            </a>
+
+            <a href="https://www.notion.so/21st-March-Shift-2-32a0a0121cbb802fadc1f5ba2656d035" target="_blank" class="nav-card">
+                <span class="date">MARCH 21, 2026</span>
+                <span class="shift-title">Shift 02</span>
+                <span class="view-btn">Initialize Access →</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Interactive Mouse Glow
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+
+            // Card Light Tracking
+            document.querySelectorAll('.nav-card').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+        });
+
+        // Add subtle entry animation
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.nav-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body>
+</html>
